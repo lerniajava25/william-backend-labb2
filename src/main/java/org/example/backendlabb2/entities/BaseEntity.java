@@ -2,8 +2,6 @@ package org.example.backendlabb2.entities;
 
 import jakarta.persistence.*;
 import org.hibernate.proxy.HibernateProxy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -14,11 +12,9 @@ public abstract class BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @CreatedDate
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @LastModifiedDate
     @Column(name = "modified_at")
     private LocalDateTime modifiedAt;
 
@@ -26,12 +22,35 @@ public abstract class BaseEntity {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
     public LocalDateTime getModifiedAt() {
         return modifiedAt;
+    }
+
+    public void setModifiedAt(LocalDateTime modifiedAt) {
+        this.modifiedAt = modifiedAt;
+    }
+
+    @PrePersist
+    public void onPrePersist() {
+        this.setCreatedAt(LocalDateTime.now());
+        this.setModifiedAt(LocalDateTime.now());
+    }
+
+    @PreUpdate
+    public void onPreUpdate() {
+        this.setModifiedAt(LocalDateTime.now());
     }
 
     @Override
