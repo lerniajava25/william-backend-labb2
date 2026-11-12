@@ -5,8 +5,13 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.repository.ListCrudRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CommentRepository extends ListCrudRepository<Comment, Long> {
-    @EntityGraph(value = "Comment.detail")
+    @EntityGraph(attributePaths = {"author", "ticket"})
     List<Comment> findAllBy();
+
+    @Override
+    @EntityGraph(attributePaths = {"author", "ticket"})
+    Optional<Comment> findById(Long id);
 }

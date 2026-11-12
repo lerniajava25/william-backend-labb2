@@ -1,5 +1,6 @@
 package org.example.backendlabb2.controllers;
 
+import jakarta.validation.Valid;
 import org.example.backendlabb2.dtos.UserDTO;
 import org.example.backendlabb2.dtos.UserRequestDTO;
 import org.example.backendlabb2.entities.User;
@@ -21,67 +22,37 @@ public class UserController {
     @GetMapping
     public List<UserDTO> findAll() {
         return userService.findAll().stream()
-                .map(user -> new UserDTO(
-                        user.getId(),
-                        user.getUsername(),
-                        user.getRole(),
-                        user.isActive(),
-                        user.getCreatedAt(),
-                        user.getModifiedAt()))
+                .map(UserDTO::from)
                 .toList();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
         return userService.findById(id)
-                .map(user -> ResponseEntity.ok(new UserDTO(
-                        user.getId(),
-                        user.getUsername(),
-                        user.getRole(),
-                        user.isActive(),
-                        user.getCreatedAt(),
-                        user.getModifiedAt())))
+                .map(user -> ResponseEntity.ok(UserDTO.from(user)))
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public UserDTO save(@RequestBody UserRequestDTO req) {
+    public UserDTO save(@Valid @RequestBody UserRequestDTO req) {
         User user = new User();
         user.setUsername(req.username());
-        user.setPasswordHash(req.passwordHash());
+        user.setPasswordHash(req.password());
         user.setRole(req.role());
         user.setActive(req.active());
-        User saved = userService.save(user);
-
-        return new UserDTO(
-                saved.getId(),
-                saved.getUsername(),
-                saved.getRole(),
-                saved.isActive(),
-                saved.getCreatedAt(),
-                saved.getModifiedAt()
-        );
+        return UserDTO.from(userService.save(user));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> update(@PathVariable Long id, @RequestBody UserRequestDTO req) {
+    public ResponseEntity<UserDTO> update(@PathVariable Long id, @Valid @RequestBody UserRequestDTO req) {
         User user = userService.findById(id).orElse(null);
         if(user == null) return ResponseEntity.notFound().build();
 
         user.setUsername(req.username());
-        user.setPasswordHash(req.passwordHash());
+        user.setPasswordHash(req.password());
         user.setRole(req.role());
         user.setActive(req.active());
-        User updated = userService.save(user);
-
-        return ResponseEntity.ok(new UserDTO(
-                updated.getId(),
-                updated.getUsername(),
-                updated.getRole(),
-                updated.isActive(),
-                updated.getCreatedAt(),
-                updated.getModifiedAt()
-        ));
+        return ResponseEntity.ok(UserDTO.from(userService.save(user)));
     }
 
     @DeleteMapping("/{id}")
