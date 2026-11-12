@@ -4,11 +4,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.example.backendlabb2.entities.Role;
 
-import java.time.LocalDateTime;
-
 public record UserRequestDTO(
         @NotBlank String username,
-        @NotBlank String passwordHash,
+        @NotBlank String password,
         @NotNull Role role,
         @NotNull boolean active) {
 }

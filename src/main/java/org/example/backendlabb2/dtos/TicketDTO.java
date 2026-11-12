@@ -1,7 +1,7 @@
 package org.example.backendlabb2.dtos;
 
+import org.example.backendlabb2.entities.Ticket;
 import org.example.backendlabb2.entities.TicketStatus;
-import org.example.backendlabb2.entities.User;
 
 import java.time.LocalDateTime;
 
@@ -10,8 +10,19 @@ public record TicketDTO(
         String title,
         String description,
         TicketStatus status,
-        User author,
-        User assignee,
+        UserDTO author,
+        UserDTO assignee,
         LocalDateTime createdAt,
         LocalDateTime modifiedAt) {
+    public static TicketDTO from(Ticket ticket) {
+        return new TicketDTO(
+                ticket.getId(),
+                ticket.getTitle(),
+                ticket.getDescription(),
+                ticket.getStatus(),
+                UserDTO.from(ticket.getAuthor()),
+                UserDTO.from(ticket.getAssignee()),
+                ticket.getCreatedAt(),
+                ticket.getModifiedAt());
+    }
 }
