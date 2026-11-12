@@ -37,7 +37,7 @@ public class UserController {
     public UserDTO save(@Valid @RequestBody UserRequestDTO req) {
         User user = new User();
         user.setUsername(req.username());
-        user.setPasswordHash(req.password());
+        userService.setPassword(user, req.password());
         user.setRole(req.role());
         user.setActive(req.active());
         return UserDTO.from(userService.save(user));
@@ -49,7 +49,7 @@ public class UserController {
         if(user == null) return ResponseEntity.notFound().build();
 
         user.setUsername(req.username());
-        user.setPasswordHash(req.password());
+        userService.setPassword(user, req.password());
         user.setRole(req.role());
         user.setActive(req.active());
         return ResponseEntity.ok(UserDTO.from(userService.save(user)));
