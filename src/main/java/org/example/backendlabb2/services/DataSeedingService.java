@@ -48,11 +48,17 @@ public class DataSeedingService {
         admin.setRole(Role.ADMIN);
         userRepository.save(admin);
 
-        Comment comment = new Comment();
-        comment.setCommentText("This is a comment");
-        comment.setAuthor(admin);
+        Comment comment1 = new Comment();
+        comment1.setCommentText("This is a comment");
+        comment1.setAuthor(admin);
+
+        Comment comment2 = new Comment();
+        comment2.setCommentText("This is another comment");
+        comment2.setAuthor(agent);
+
         List<Comment> comments = new ArrayList<>();
-        comments.add(comment);
+        comments.add(comment1);
+        comments.add(comment2);
 
         Ticket ticket = new Ticket();
         ticket.setTitle("Example Ticket");
@@ -60,10 +66,12 @@ public class DataSeedingService {
         ticket.setStatus(TicketStatus.NEW);
         ticket.setAuthor(user);
         ticket.setAssignee(agent);
-        comment.setTicket(ticket);
+        comment1.setTicket(ticket);
+        comment2.setTicket(ticket);
         ticket.setComments(comments);
 
-        commentRepository.save(comment);
+        commentRepository.save(comment1);
+        commentRepository.save(comment2);
         ticketRepository.save(ticket);
     }
 }
