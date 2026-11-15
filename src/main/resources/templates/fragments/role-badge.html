@@ -1,0 +1,6 @@
+<span th:fragment="badge(user)"
+      th:if="${user != null and user.role.name() != 'USER'}"
+      class="badge ms-1"
+      th:classappend="${user.role.name() == 'ADMIN'} ? 'text-bg-danger' : 'text-bg-info'"
+      th:text="${#strings.capitalize(#strings.toLowerCase(user.role))}">Agent
+</span>

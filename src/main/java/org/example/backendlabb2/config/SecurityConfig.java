@@ -24,8 +24,8 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain apiSecurityFilterChain(HttpSecurity http) {
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/login", "/error").permitAll()
-                .requestMatchers("/api/**", "/tickets").authenticated()
+                .requestMatchers("/login", "/error", "/css/**", "/favicon.ico").permitAll()
+                .requestMatchers("/api/**", "/tickets", "/tickets/**").authenticated()
                 .anyRequest().denyAll());
         http.formLogin(form -> form.defaultSuccessUrl("/tickets", true));
 
