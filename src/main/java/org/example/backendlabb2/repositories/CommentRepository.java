@@ -14,4 +14,7 @@ public interface CommentRepository extends ListCrudRepository<Comment, Long> {
     @Override
     @EntityGraph(attributePaths = {"author", "ticket"})
     Optional<Comment> findById(Long id);
+
+    @EntityGraph(attributePaths = "author")
+    List<Comment> findByTicketIdOrderByCreatedAtAsc(Long ticketId);
 }

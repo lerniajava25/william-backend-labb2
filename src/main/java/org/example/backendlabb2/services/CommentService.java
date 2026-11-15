@@ -26,6 +26,10 @@ public class CommentService {
         return commentRepository.findById(id);
     }
 
+    public List<Comment> findByTicket(Long ticketId) {
+        return commentRepository.findByTicketIdOrderByCreatedAtAsc(ticketId);
+    }
+
     public Comment save(Comment comment) {
         return commentRepository.save(comment);
     }
