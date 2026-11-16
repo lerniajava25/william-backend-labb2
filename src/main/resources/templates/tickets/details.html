@@ -41,9 +41,11 @@
                         <span class="text-body" th:if="${ticket.assignee != null}"
                               th:text="${ticket.assignee.username}">agent
                         </span>
-                        <span class="fst-italic" th:if="${ticket.assignee == null}">
-                            Unassigned
-                        </span>
+                        <span th:if="${ticket.assignee == null}" class="fst-italic">Unassigned</span>
+                        <form th:if="${ticket.assignee == null}" th:action="@{/tickets/{id}/assign(id=${ticket.id})}" method="post" class="d-inline"
+                              sec:authorize="hasAnyRole('AGENT', 'ADMIN')">
+                            <button type="submit" class="btn btn-link btn-sm p-0 align-baseline">Take on</button>
+                        </form>
                     </div>
                     <div th:if="${ticket.createdAt != null}">
                         <span class="text-uppercase fw-semibold me-1">Created</span>

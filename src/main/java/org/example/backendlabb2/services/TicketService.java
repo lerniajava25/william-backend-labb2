@@ -70,6 +70,25 @@ public class TicketService {
         return save(ticket);
     }
 
+    public Ticket assignTicket(Long ticketId, String username) {
+        Ticket ticket = findById(ticketId).orElse(null);
+        if(ticket == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        if(ticket.getAssignee() != null) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        var assignee = userRepository.findByUsername(username).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        if(!assignee.isActive() || assignee.getRole() == Role.USER) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        ticket.setAssignee(assignee);
+        return save(ticket);
+    }
+
     public Ticket save(Ticket ticket) {
         return ticketRepository.save(ticket);
     }

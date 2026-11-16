@@ -17,6 +17,8 @@ public class TicketWebController {
     private final TicketService ticketService;
     private final CommentService commentService;
 
+    private static final String TICKETS_REDIRECT_BASE = "redirect:/tickets/";
+
     TicketWebController(TicketService ticketService, CommentService commentService) {
         this.ticketService = ticketService;
         this.commentService = commentService;
@@ -42,12 +44,18 @@ public class TicketWebController {
     @PostMapping
     public String addTicket(@RequestParam String title, @RequestParam String description, Principal principal) {
         var ticket = ticketService.addTicket(title, description, principal.getName());
-        return "redirect:/tickets/" + ticket.getId();
+        return TICKETS_REDIRECT_BASE + ticket.getId();
     }
 
     @PostMapping("/{id}/comments")
     public String addComment(@PathVariable Long id, @RequestParam String commentText, Principal principal) {
         commentService.addComment(id, principal.getName(), commentText);
-        return "redirect:/tickets/" + id;
+        return TICKETS_REDIRECT_BASE + id;
+    }
+
+    @PostMapping("/{id}/assign")
+    public String assignTicket(@PathVariable Long id, Principal principal) {
+        var ticket = ticketService.assignTicket(id, principal.getName());
+        return TICKETS_REDIRECT_BASE + ticket.getId();
     }
 }
