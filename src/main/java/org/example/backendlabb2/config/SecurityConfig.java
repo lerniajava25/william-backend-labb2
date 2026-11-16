@@ -22,7 +22,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    SecurityFilterChain apiSecurityFilterChain(HttpSecurity http) {
+    SecurityFilterChain securityFilterChain(HttpSecurity http) {
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers("/login", "/error", "/css/**", "/favicon.ico").permitAll()
                 .requestMatchers("/api/**").hasRole("ADMIN")
