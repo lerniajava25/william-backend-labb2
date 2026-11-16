@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -35,6 +35,14 @@
                 </div>
             </div>
         </div>
+
+        <form th:action="@{/tickets}" method="post" class="mb-2" sec:authorize="hasRole('USER')">
+            <label for="titleInput">Title</label>
+            <input type="text" name="title" id="titleInput" class="form-control" required>
+            <label for="descriptionInput">Description</label>
+            <textarea name="description" id="descriptionInput" class="form-control" rows="3" required></textarea>
+            <button type="submit" class="btn btn-primary mt-2">Create ticket</button>
+        </form>
 
         <div class="d-flex flex-column gap-3" th:unless="${#lists.isEmpty(tickets)}">
             <article class="card ticket-card shadow-sm" th:each="ticket : ${tickets}"

@@ -26,7 +26,6 @@ public class TicketWebController {
     public String listTickets(Model model) {
         List<Ticket> tickets = ticketService.findAll();
         model.addAttribute("tickets", tickets);
-        model.addAttribute("ticket", new Ticket());
         return "tickets/tickets";
     }
 
@@ -38,6 +37,12 @@ public class TicketWebController {
         model.addAttribute("ticket", ticket);
         model.addAttribute("comments", comments);
         return "tickets/details";
+    }
+
+    @PostMapping
+    public String addTicket(@RequestParam String title, @RequestParam String description, Principal principal) {
+        var ticket = ticketService.addTicket(title, description, principal.getName());
+        return "redirect:/tickets/" + ticket.getId();
     }
 
     @PostMapping("/{id}/comments")

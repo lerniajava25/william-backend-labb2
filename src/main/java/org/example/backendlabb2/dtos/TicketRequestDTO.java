@@ -8,6 +8,5 @@ public record TicketRequestDTO(
         @NotBlank String title,
         @NotBlank String description,
         @NotNull TicketStatus status,
-        @NotNull Long authorId,
         Long assigneeId) {
 }

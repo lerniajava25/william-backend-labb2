@@ -41,7 +41,9 @@
                         <span class="text-body" th:if="${ticket.assignee != null}"
                               th:text="${ticket.assignee.username}">agent
                         </span>
-                        <span class="fst-italic" th:if="${ticket.assignee == null}">Unassigned</span>
+                        <span class="fst-italic" th:if="${ticket.assignee == null}">
+                            Unassigned
+                        </span>
                     </div>
                     <div th:if="${ticket.createdAt != null}">
                         <span class="text-uppercase fw-semibold me-1">Created</span>

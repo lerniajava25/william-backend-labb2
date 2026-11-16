@@ -3,6 +3,7 @@ package org.example.backendlabb2.services;
 import jakarta.transaction.Transactional;
 import org.example.backendlabb2.entities.Role;
 import org.example.backendlabb2.entities.Ticket;
+import org.example.backendlabb2.entities.TicketStatus;
 import org.example.backendlabb2.entities.User;
 import org.example.backendlabb2.repositories.TicketRepository;
 import org.example.backendlabb2.repositories.UserRepository;
@@ -49,6 +50,24 @@ public class TicketService {
         }
 
         return ticket;
+    }
+
+    public Ticket addTicket(String title, String description, String ticketAuthorName) {
+        if(title == null || title.isBlank() || description == null || description.isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        var ticketAuthor = userRepository.findByUsername(ticketAuthorName).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        if(ticketAuthor.getRole() != Role.USER || !ticketAuthor.isActive()) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        Ticket ticket = new Ticket();
+        ticket.setTitle(title);
+        ticket.setDescription(description);
+        ticket.setStatus(TicketStatus.NEW);
+        ticket.setAuthor(ticketAuthor);
+        return save(ticket);
     }
 
     public Ticket save(Ticket ticket) {
