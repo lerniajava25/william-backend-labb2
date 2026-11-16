@@ -1,0 +1,48 @@
+body {
+    background-color: #f4f6f9;
+}
+
+.status-NEW              { --status-color: #0d6efd; }
+.status-IN_PROGRESS      { --status-color: #fd7e14; }
+.status-WAITING_FOR_USER { --status-color: #6f42c1; }
+.status-RESOLVED         { --status-color: #198754; }
+.status-CLOSED           { --status-color: #6c757d; }
+
+.status-badge {
+    background-color: var(--status-color);
+    color: #fff;
+    font-weight: 500;
+    letter-spacing: .02em;
+}
+
+.ticket-card {
+    border: 0;
+    border-left: 4px solid var(--status-color);
+    transition: box-shadow .15s ease-in-out, transform .15s ease-in-out;
+}
+
+.ticket-card:hover {
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .08) !important;
+    transform: translateY(-1px);
+}
+
+.ticket-description {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.stat-card .stat-value {
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.stat-card .stat-dot {
+    display: inline-block;
+    width: .6rem;
+    height: .6rem;
+    border-radius: 50%;
+    background-color: var(--status-color);
+}

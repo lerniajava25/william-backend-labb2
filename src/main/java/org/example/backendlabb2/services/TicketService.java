@@ -1,9 +1,14 @@
 package org.example.backendlabb2.services;
 
 import jakarta.transaction.Transactional;
+import org.example.backendlabb2.entities.Role;
 import org.example.backendlabb2.entities.Ticket;
+import org.example.backendlabb2.entities.User;
 import org.example.backendlabb2.repositories.TicketRepository;
+import org.example.backendlabb2.repositories.UserRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,9 +17,11 @@ import java.util.Optional;
 @Transactional
 public class TicketService {
     private final TicketRepository ticketRepository;
+    private final UserRepository userRepository;
 
-    TicketService(TicketRepository ticketRepository) {
+    TicketService(TicketRepository ticketRepository, UserRepository userRepository) {
         this.ticketRepository = ticketRepository;
+        this.userRepository = userRepository;
     }
 
     public List<Ticket> findAll() {
@@ -23,6 +30,25 @@ public class TicketService {
 
     public Optional<Ticket> findById(Long id) {
         return ticketRepository.findById(id);
+    }
+
+    public Ticket findAccessibleTicket(Long id, String username) {
+        var user = userRepository.findByUsername(username).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return findAccessibleTicket(id, user);
+    }
+
+    public Ticket findAccessibleTicket(Long id, User user) {
+        if(!user.isActive()) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        var ticket = ticketRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        if(user.getRole() == Role.USER && !ticket.getAuthor().getId().equals(user.getId())) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        return ticket;
     }
 
     public Ticket save(Ticket ticket) {
