@@ -71,10 +71,7 @@ public class TicketService {
     }
 
     public Ticket assignTicket(Long ticketId, String username) {
-        Ticket ticket = findById(ticketId).orElse(null);
-        if(ticket == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
+        Ticket ticket = findById(ticketId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         if(ticket.getAssignee() != null) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
@@ -86,6 +83,18 @@ public class TicketService {
         }
 
         ticket.setAssignee(assignee);
+        return save(ticket);
+    }
+
+    public Ticket updateStatus(Long ticketId, TicketStatus status, String username) {
+        Ticket ticket = findById(ticketId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        var user = userRepository.findByUsername(username).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        if(!user.isActive() || user.getRole() == Role.USER) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        ticket.setStatus(status);
         return save(ticket);
     }
 

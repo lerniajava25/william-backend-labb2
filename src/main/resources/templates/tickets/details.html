@@ -24,7 +24,21 @@
                         <span th:text="${ticket.title}">Ticket title</span>
                     </h2>
                     <span class="badge rounded-pill status-badge flex-shrink-0"
+                          sec:authorize="!hasAnyRole('AGENT', 'ADMIN')"
                           th:text="${#strings.replace(ticket.status, '_', ' ')}">NEW</span>
+
+                    <form th:action="@{/tickets/{id}/update-status(id=${ticket.id})}" method="post"
+                          class="flex-shrink-0" sec:authorize="hasAnyRole('AGENT', 'ADMIN')">
+                        <label for="statusSelect" class="visually-hidden">Status</label>
+                        <select id="statusSelect" name="status"
+                                class="form-select form-select-sm rounded-pill status-badge status-select"
+                                onchange="this.form.submit()">
+                            <option th:each="s : ${statuses}"
+                                    th:value="${s}"
+                                    th:selected="${s == ticket.status}"
+                                    th:text="${#strings.replace(s, '_', ' ')}">NEW</option>
+                        </select>
+                    </form>
                 </div>
 
                 <p class="text-secondary mb-3" th:text="${ticket.description}">
