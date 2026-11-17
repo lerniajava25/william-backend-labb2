@@ -8,6 +8,15 @@ body {
 .status-RESOLVED         { --status-color: #198754; }
 .status-CLOSED           { --status-color: #6c757d; }
 
+.user-USER  { --user-color: #0d6efd; }
+.user-AGENT { --user-color: #fd7e14; }
+.user-ADMIN { --user-color: #dc3545; }
+
+.user-badge {
+    background-color: var(--user-color);
+    color: #fff;
+}
+
 .status-badge {
     background-color: var(--status-color);
     color: #fff;
