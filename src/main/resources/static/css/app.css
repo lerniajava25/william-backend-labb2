@@ -46,3 +46,23 @@ body {
     border-radius: 50%;
     background-color: var(--status-color);
 }
+
+/* Status badge rendered as a dropdown for agents/admins */
+.status-select {
+    width: auto;
+    border: 0;
+    padding-left: .75rem;
+    font-size: .75rem;
+    cursor: pointer;
+    /* white chevron instead of Bootstrap's dark one */
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+}
+
+.status-select:focus {
+    box-shadow: 0 0 0 .2rem rgba(0, 0, 0, .15);
+}
+
+.status-select option {
+    color: #212529;
+    background-color: #fff;
+}

@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -40,10 +41,8 @@ public class TicketController {
     }
 
     @PostMapping
-    public TicketDTO save(@Valid  @RequestBody TicketRequestDTO req) {
-        Ticket ticket = new Ticket();
-        applyRequest(ticket, req);
-        return TicketDTO.from(ticketService.save(ticket));
+    public TicketDTO save(@Valid  @RequestBody TicketRequestDTO req, Principal principal) {
+        return TicketDTO.from(ticketService.addTicket(req.title(), req.description(), principal.getName()));
     }
 
     @PutMapping("/{id}")
@@ -51,7 +50,10 @@ public class TicketController {
         Ticket ticket = ticketService.findById(id).orElse(null);
         if(ticket == null) return ResponseEntity.notFound().build();
 
-        applyRequest(ticket, req);
+        ticket.setTitle(req.title());
+        ticket.setDescription(req.description());
+        ticket.setStatus(req.status());
+        ticket.setAssignee(req.assigneeId() == null ? null : findUser(req.assigneeId()));
         return ResponseEntity.ok(TicketDTO.from(ticketService.save(ticket)));
     }
 
@@ -59,14 +61,6 @@ public class TicketController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         ticketService.delete(id);
         return ResponseEntity.noContent().build();
-    }
-
-    private void applyRequest(Ticket ticket, TicketRequestDTO req) {
-        ticket.setTitle(req.title());
-        ticket.setDescription(req.description());
-        ticket.setStatus(req.status());
-        ticket.setAuthor(findUser(req.authorId()));
-        ticket.setAssignee(req.assigneeId() == null ? null : findUser(req.assigneeId()));
     }
 
     private User findUser(Long id) {
