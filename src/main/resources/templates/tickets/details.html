@@ -31,7 +31,7 @@
                           class="flex-shrink-0" sec:authorize="hasAnyRole('AGENT', 'ADMIN')">
                         <label for="statusSelect" class="visually-hidden">Status</label>
                         <select id="statusSelect" name="status"
-                                class="form-select form-select-sm rounded-pill status-badge status-select"
+                                class="form-select form-select-sm rounded-pill status-badge attribute-select"
                                 onchange="this.form.submit()">
                             <option th:each="s : ${statuses}"
                                     th:value="${s}"

@@ -26,8 +26,8 @@ public class TicketWebController {
     }
 
     @GetMapping
-    public String listTickets(Model model) {
-        List<Ticket> tickets = ticketService.findAll();
+    public String listTickets(Model model, Principal principal) {
+        List<Ticket> tickets = ticketService.findAccessibleTickets(principal.getName());
         model.addAttribute("tickets", tickets);
         return "tickets/tickets";
     }

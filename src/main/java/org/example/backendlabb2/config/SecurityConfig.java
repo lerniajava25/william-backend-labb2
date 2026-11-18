@@ -25,7 +25,7 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) {
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers("/login", "/error", "/css/**", "/favicon.ico").permitAll()
-                .requestMatchers("/api/**").hasRole("ADMIN")
+                .requestMatchers("/api/**", "/users", "/users/**").hasRole("ADMIN")
                 .requestMatchers("/tickets", "/tickets/**").authenticated()
                 .anyRequest().denyAll());
         http.formLogin(form -> form.defaultSuccessUrl("/tickets", true));
