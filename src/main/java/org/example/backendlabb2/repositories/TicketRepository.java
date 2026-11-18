@@ -13,6 +13,9 @@ public interface TicketRepository extends ListCrudRepository<Ticket, Long> {
     @EntityGraph(attributePaths = {"author", "assignee"})
     List<Ticket> findAllBy();
 
+    @EntityGraph(attributePaths = {"author", "assignee"})
+    List<Ticket> findByAuthorId(Long authorId);
+
     @Override
     @EntityGraph(attributePaths = {"author", "assignee"})
     Optional<Ticket> findById(Long id);

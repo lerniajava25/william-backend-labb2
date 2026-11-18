@@ -13,7 +13,8 @@
     <main class="container py-4 py-md-5">
         <div class="d-flex flex-wrap justify-content-between align-items-end gap-2 mb-4">
             <div>
-                <h1 class="h3 mb-1">Tickets</h1>
+                <h1 class="h3 mb-1" sec:authorize="hasRole('USER')">My tickets</h1>
+                <h1 class="h3 mb-1" sec:authorize="hasAnyRole('AGENT', 'ADMIN')">Tickets</h1>
                 <p class="text-muted mb-0">
                     <span th:text="${#lists.size(tickets)}">0</span>
                     <span th:text="${#lists.size(tickets) == 1} ? 'ticket' : 'tickets'">tickets</span>

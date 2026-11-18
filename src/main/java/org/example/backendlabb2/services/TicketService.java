@@ -33,6 +33,15 @@ public class TicketService {
         return ticketRepository.findById(id);
     }
 
+    public List<Ticket> findAccessibleTickets(String username) {
+        var user = userRepository.findByUsername(username).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        if(!user.isActive()) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        return user.getRole() == Role.USER ? ticketRepository.findByAuthorId(user.getId()) : ticketRepository.findAllBy();
+    }
+
     public Ticket findAccessibleTicket(Long id, String username) {
         var user = userRepository.findByUsername(username).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         return findAccessibleTicket(id, user);
