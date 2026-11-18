@@ -22,7 +22,7 @@
                     <div class="d-flex justify-content-between align-items-start gap-3 mb-2">
                         <h2 class="h5 mb-0">
                             <span class="text-muted fw-normal me-1" th:text="'#' + ${user.id}">#1</span>
-                            <a th:href="@{/users/{id}/edit(id=${user.id})}" th:text="${user.username}">Username</a>
+                            <a th:href="@{/users/{id}(id=${user.id})}" th:text="${user.username}">Username</a>
                         </h2>
                         <div class="d-flex gap-2">
                             <span class="badge rounded-pill user-badge flex-shrink-0"
