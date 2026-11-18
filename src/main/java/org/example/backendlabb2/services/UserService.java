@@ -35,6 +35,24 @@ public class UserService {
         return userRepository.findById(id);
     }
 
+    public void createUser(String username, String password, Role role, boolean active, String callerUsername) {
+        if(username == null || username.isEmpty() || password == null || password.isEmpty() || role == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        var caller = userRepository.findByUsername(callerUsername).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        if(caller.getRole() != Role.ADMIN || !caller.isActive()) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        User user = new User();
+        user.setUsername(username);
+        user.setPasswordHash(passwordEncoder.encode(password));
+        user.setRole(role);
+        user.setActive(active);
+        save(user);
+    }
+
     public User updateRole(Long id, Role role, String callerUsername) {
         var user = findAccessibleUser(id, callerUsername);
         user.setRole(role);

@@ -16,6 +16,25 @@
             <a th:href="@{/tickets}" class="">< Back to tickets</a>
         </div>
 
+        <form th:action="@{/users/new}" method="post" class="mb-2" sec:authorize="hasRole('ADMIN')">
+            <label for="usernameInput">Username</label>
+            <input type="text" name="username" id="usernameInput" class="form-control" required>
+            <label for="passwordInput">Password</label>
+            <input type="password" name="password" id="passwordInput" class="form-control" required>
+            <label for="roleSelect">Role</label>
+            <select id="roleSelect" name="role"
+                    class="form-select form-select-sm rounded-pill attribute-select">
+                <option th:each="r : ${roles}"
+                        th:value="${r}"
+                        th:text="${#strings.replace(r, '_', ' ')}">USER</option>
+            </select>
+            <div class="form-check mt-2 mb-2">
+                <label for="activeInput" class="form-check-label">Active</label>
+                <input type="checkbox" name="active" id="activeInput" class="form-check-input">
+            </div>
+            <button type="submit" class="btn btn-primary mt-2">Create user</button>
+        </form>
+
         <div class="d-flex flex-column gap-3" th:unless="${#lists.isEmpty(users)}">
             <article class="card ticket-card shadow-sm" th:each="user : ${users}" th:classappend="'user-' + ${user.role}">
                 <div class="card-body">

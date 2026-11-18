@@ -24,6 +24,7 @@ public class UserWebController {
     public String listTickets(Model model) {
         List<User> users = userService.findAll();
         model.addAttribute("users", users);
+        model.addAttribute("roles", Role.values());
         return "users/users";
     }
 
@@ -33,6 +34,16 @@ public class UserWebController {
         model.addAttribute("user", user);
         model.addAttribute("roles", Role.values());
         return "users/edit";
+    }
+
+    @PostMapping("/new")
+    public String createUser(@RequestParam String username,
+                             @RequestParam String password,
+                             @RequestParam Role role,
+                             @RequestParam(defaultValue = "false") boolean active,
+                             Principal principal) {
+        userService.createUser(username, password, role, active, principal.getName());
+        return "redirect:/users";
     }
 
     @PostMapping("/{id}/update-role")
