@@ -1,6 +1,6 @@
 <nav xmlns:sec="http://www.thymeleaf.org/extras/spring-security" class="navbar navbar-dark bg-dark shadow-sm">
     <div class="container">
-        <span class="navbar-brand fw-semibold">Support desk</span>
+        <a th:href="@{/tickets}" class="navbar-brand fw-semibold">Support desk</a>
         <div class="d-flex align-items-center gap-3" sec:authorize="isAuthenticated()">
                 <span class="text-white-50 small d-none d-sm-inline">
                     Signed in as
@@ -8,6 +8,7 @@
                     <span class="badge text-bg-danger ms-1" sec:authorize="hasRole('ADMIN')">Admin</span>
                     <span class="badge text-bg-info ms-1" sec:authorize="hasRole('AGENT')">Agent</span>
                 </span>
+                <a th:href="@{/users}" sec:authorize="hasRole('ADMIN')">Users</a>
             <form th:action="@{/logout}" method="post" class="m-0">
                 <button type="submit" class="btn btn-outline-light btn-sm">Log out</button>
             </form>

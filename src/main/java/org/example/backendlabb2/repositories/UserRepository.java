@@ -10,4 +10,6 @@ public interface UserRepository extends ListCrudRepository<User, Long> {
     List<User> findAllBy();
 
     Optional<User> findByUsername(String username);
+
+    boolean existsByUsername(String username);
 }

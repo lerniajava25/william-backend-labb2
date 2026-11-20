@@ -40,6 +40,10 @@ public class UserService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
 
+        if(userRepository.existsByUsername(username)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        }
+
         var caller = userRepository.findByUsername(callerUsername).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         if(caller.getRole() != Role.ADMIN || !caller.isActive()) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);

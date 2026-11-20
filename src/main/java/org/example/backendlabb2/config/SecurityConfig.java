@@ -26,7 +26,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers("/login", "/error", "/css/**", "/favicon.ico").permitAll()
                 .requestMatchers("/api/**", "/users", "/users/**").hasRole("ADMIN")
-                .requestMatchers("/tickets", "/tickets/**").authenticated()
+                .requestMatchers("/","/tickets", "/tickets/**").authenticated()
                 .anyRequest().denyAll());
         http.formLogin(form -> form.defaultSuccessUrl("/tickets", true));
 
